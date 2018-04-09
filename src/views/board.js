@@ -27,7 +27,12 @@ function Pool({
     return cb(target)
   }
   const touchmove = touchWrap(target => over(target.dataset.name))
-  const touchend = touchWrap(target => mouseup(target.dataset.name)())
+  const touchend = touchWrap(
+    target =>
+      target.dataset.value < (parseInt(target.dataset.limit) || Infinity)
+        ? stopDrag(target.dataset.name)
+        : reset()
+  )
 
   const className = [
     'pool',
@@ -45,6 +50,7 @@ function Pool({
       class={className}
       data-name={name}
       data-limit={limit}
+      data-value={value}
       onmousedown={() => startDrag(name)}
       onmouseup={mouseup(name)}
       onmouseover={() => over(name)}

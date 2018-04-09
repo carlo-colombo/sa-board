@@ -9,7 +9,7 @@ const actions = {
   stopDrag: dst => state => {
     if (state.pools[state.src].value == 0 || dst == state.src) {
       console.log('bailing out')
-      return this.reset()()
+      return actions.reset()()
     }
 
     return {
