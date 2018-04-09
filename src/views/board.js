@@ -1,6 +1,16 @@
 import { h } from 'hyperapp'
 
-function Pool({ name, startDrag, value, stopDrag, limit, src, dst, over }) {
+function Pool({
+  name,
+  startDrag,
+  value,
+  stopDrag,
+  limit,
+  src,
+  dst,
+  over,
+  reset
+}) {
   function touchstart(e) {
     e.preventDefault()
     return startDrag(name)
@@ -16,10 +26,8 @@ function Pool({ name, startDrag, value, stopDrag, limit, src, dst, over }) {
     )
     return cb(target)
   }
-  const touchmove = touchWrap(target =>
-    over({ dst: target.dataset.name, limit: target.dataset.limit })
-  )
-  const touchend = touchWrap(target => stopDrag(target.dataset.name))
+  const touchmove = touchWrap(target => over(target.dataset.name))
+  const touchend = touchWrap(target => mouseup(target.dataset.name)())
 
   const className = [
     'pool',
@@ -29,13 +37,16 @@ function Pool({ name, startDrag, value, stopDrag, limit, src, dst, over }) {
     dst == name && value == limit ? 'invalid-dst' : ''
   ].join(' ')
 
+  const mouseup = name => () =>
+    value < (limit || Infinity) ? stopDrag(name) : reset()
+
   return (
     <div
       class={className}
       data-name={name}
       data-limit={limit}
       onmousedown={() => startDrag(name)}
-      onmouseup={() => stopDrag({ dst: name, limit })}
+      onmouseup={mouseup(name)}
       onmouseover={() => over(name)}
       ontouchstart={touchstart}
       ontouchend={touchend}

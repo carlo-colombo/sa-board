@@ -6,14 +6,10 @@ const actions = {
       invalidSrc: state.pools[src].value == 0 ? src : null
     }
   },
-  stopDrag: ({ dst, limit }) => state => {
-    if (
-      state.pools[state.src].value == 0 ||
-      state.pools[dst].value == limit ||
-      dst == state.src
-    ) {
+  stopDrag: dst => state => {
+    if (state.pools[state.src].value == 0 || dst == state.src) {
       console.log('bailing out')
-      return { src: null, dragging: false, src: null, dst: null }
+      return this.reset()()
     }
 
     return {
@@ -32,7 +28,8 @@ const actions = {
     return {
       dst: state.dragging && dst != state.src ? dst : null
     }
-  }
+  },
+  reset: () => state => ({ src: null, dst: null, dragging: false })
 }
 
 export default actions
