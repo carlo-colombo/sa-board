@@ -13,14 +13,14 @@ const actions = {
       dst == state.src
     ) {
       console.log('bailing out')
-      return { src: null, dragging: false, invalidSrc: null, invalidDst: null }
+      return { src: null, dragging: false, src: null, dst: null }
     }
 
     return {
       src: null,
       dragging: false,
-      invalidSrc: null,
-      invalidDst: null,
+      src: null,
+      dst: null,
       pools: {
         ...state.pools,
         [state.src]: { value: state.pools[state.src].value - 1 },
@@ -28,12 +28,9 @@ const actions = {
       }
     }
   },
-  over: ({ dst, limit }) => state => {
+  over: dst => state => {
     return {
-      invalidDst:
-        state.dragging && dst != state.src && state.pools[dst].value == limit
-          ? dst
-          : null
+      dst: state.dragging && dst != state.src ? dst : null
     }
   }
 }

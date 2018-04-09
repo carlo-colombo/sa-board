@@ -1,15 +1,6 @@
 import { h } from 'hyperapp'
 
-function Pool({
-  name,
-  startDrag,
-  value,
-  stopDrag,
-  limit,
-  invalidSrc,
-  invalidDst,
-  over
-}) {
+function Pool({ name, startDrag, value, stopDrag, limit, src, dst, over }) {
   function touchstart(e) {
     e.preventDefault()
     return startDrag(name)
@@ -28,16 +19,14 @@ function Pool({
   const touchmove = touchWrap(target =>
     over({ dst: target.dataset.name, limit: target.dataset.limit })
   )
-  const touchend = touchWrap(target =>
-    stopDrag({ dst: target.dataset.name, limit: target.dataset.limit })
-  )
+  const touchend = touchWrap(target => stopDrag(target.dataset.name))
 
   const className = [
     'pool',
     name.includes('Top') ? 'flip' : '',
     name,
-    invalidSrc == name ? 'invalid-src' : '',
-    invalidDst == name ? 'invalid-dst' : ''
+    src == name && value == 0 ? 'invalid-src' : '',
+    dst == name && value == limit ? 'invalid-dst' : ''
   ].join(' ')
 
   return (
@@ -47,7 +36,7 @@ function Pool({
       data-limit={limit}
       onmousedown={() => startDrag(name)}
       onmouseup={() => stopDrag({ dst: name, limit })}
-      onmouseover={() => over({ dst: name, limit })}
+      onmouseover={() => over(name)}
       ontouchstart={touchstart}
       ontouchend={touchend}
       ontouchmove={touchmove}
@@ -64,23 +53,23 @@ const view = (state, actions) => (
     <Pool
       name="auraTop"
       limit={5}
-      invalidSrc={state.invalidSrc}
-      invalidDst={state.invalidDst}
+      src={state.src}
+      dst={state.dst}
       {...actions}
       {...state.pools.auraTop}
     />
     <Pool
       name="shadow"
-      invalidSrc={state.invalidSrc}
-      invalidDst={state.invalidDst}
+      src={state.src}
+      dst={state.dst}
       {...state.pools.shadow}
       {...actions}
     />
     <Pool
       name="distance"
       limit={10}
-      invalidSrc={state.invalidSrc}
-      invalidDst={state.invalidDst}
+      src={state.src}
+      dst={state.dst}
       {...actions}
       {...state.pools.distance}
     />
