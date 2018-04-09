@@ -91,6 +91,7 @@ const view = (state, actions) => (
       {...state.pools.distance}
     />
     <h1>{state.dragging ? 'Dragging' : ''}</h1>
+    <button onclick={actions.clear}>clear</button>
   </div>
 )
 
