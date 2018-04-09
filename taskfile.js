@@ -33,10 +33,15 @@ export async function js(taskr) {
     .rollup({
       rollup: {
         plugins: [
-          require('rollup-plugin-buble')({ jsx: 'h' }),
+          require('rollup-plugin-buble')({
+            jsx: 'h',
+            objectAssign: 'Object.assign'
+          }),
           require('rollup-plugin-commonjs')(),
           require('rollup-plugin-replace')({
-            'process.env.NODE_ENV': JSON.stringify(isWatching ? 'development' : 'production')
+            'process.env.NODE_ENV': JSON.stringify(
+              isWatching ? 'development' : 'production'
+            )
           }),
           require('rollup-plugin-node-resolve')({
             browser: true,
@@ -60,7 +65,9 @@ export async function styles(taskr) {
       outputStyle: 'compressed',
       includePaths: []
     })
-    .postcss({ plugins: [require('autoprefixer')({ browsers: ['last 2 versions'] })] })
+    .postcss({
+      plugins: [require('autoprefixer')({ browsers: ['last 2 versions'] })]
+    })
     .target(`${target}`)
 }
 
@@ -112,6 +119,7 @@ export async function watch(taskr) {
     server: target,
     logPrefix: 'hyperapp',
     port: process.env.PORT || 4000,
+    host: '0.0.0.0',
     middleware: [require('connect-history-api-fallback')()]
   })
 }

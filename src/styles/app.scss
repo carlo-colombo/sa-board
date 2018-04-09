@@ -11,50 +11,24 @@ body {
     padding: 2rem;
     color: $color-text;
     font-family: $font-family;
-    font-size: 18px;
+    font-size: 28px;
+    overflow:hidden;
+    width:100%;
 }
 
 .counter {
-    text-align: center;
+    margin-top: 50px;
 
-    h1 {
-        color: $color-heading;
-    }
-
-    section > h1 {
-        padding: 1rem 0;
-    }
-
-    button {
-        border-color: black;
-        border-radius: 3px;
-        border-style: solid;
-        border-width: 1px;
-        width: 30px;
-        height: 30px;
-        outline-color: $color-outline;
-        cursor: pointer;
-
-        &.add {
-            background-color: $color-add;
-            font-size: 20px;
-            color: black;
+    .pool{
+        margin: 25px;
+        padding: 5px;
+        border: solid 1px black;
+        user-select: none;
+        &.flip{
+            transform: rotate(180deg)
         }
-
-        &.sub {
-            background-color: $color-sub;
-            font-size: 20px;
-            color: black;
-
-            &:disabled {
-                background-color: lighten($color-sub, 50%);
-                cursor: not-allowed;
-            }
+        &.invalid-src,&.invalid-dst{
+            background-color: red;
         }
-    }
-
-    .line-break {
-        width: 100%;
-        margin: 30px 0;
     }
 }
