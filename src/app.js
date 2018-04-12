@@ -5,20 +5,20 @@ import state from './states/board'
 import view from './views/board'
 import { withLogger } from '@hyperapp/logger'
 
-function storePools(nextApp) {
+function persistLedger(nextApp) {
   return function(state, actions, view, elem) {
-    state.pools = JSON.parse(sessionStorage.getItem('pools')) || state.pools
+    state.ledger = JSON.parse(sessionStorage.getItem('ledger')) || state.ledger
     const newActions = {
       ...actions,
       stopDrag: dst => state => {
         const newState = actions.stopDrag(dst)(state)
-        sessionStorage.setItem('pools', JSON.stringify(newState.pools))
+        sessionStorage.setItem('ledger', JSON.stringify(newState.ledger))
         return newState
       },
-      clear: () => () => sessionStorage.setItem('pools', null)
+      clear: () => () => sessionStorage.setItem('ledger', null)
     }
     return nextApp.call(null, state, newActions, view, elem)
   }
 }
 
-storePools(withLogger(app))(state, actions, view, document.body)
+persistLedger(withLogger(app))(state, actions, view, document.body)

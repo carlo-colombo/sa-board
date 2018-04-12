@@ -10,15 +10,7 @@ const actions = {
     }
 
     return {
-      src: null,
-      dragging: false,
-      src: null,
-      dst: null,
-      pools: {
-        ...state.pools,
-        [state.src]: state.pools[state.src] - 1,
-        [dst]: state.pools[dst] + 1
-      },
+      ...actions.reset()(),
       ledger: [...state.ledger, [state.src, dst]]
     }
   },

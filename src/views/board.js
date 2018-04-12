@@ -68,37 +68,48 @@ function Pool({
   )
 }
 
-const view = (state, actions) => (
-  <div class={`counter ${state.dragging ? 'dragging' : ''}`}>
-    <Pool
-      name="auraTop"
-      limit={5}
-      src={state.src}
-      dst={state.dst}
-      dragging={state.dragging}
-      value={state.pools.auraTop}
-      {...actions}
-    />
-    <Pool
-      name="shadow"
-      src={state.src}
-      dst={state.dst}
-      dragging={state.dragging}
-      value={state.pools.shadow}
-      {...actions}
-    />
-    <Pool
-      name="distance"
-      limit={10}
-      src={state.src}
-      dst={state.dst}
-      dragging={state.dragging}
-      value={state.pools.distance}
-      {...actions}
-    />
-    <h1>{state.dragging ? 'Dragging' : ''}</h1>
-    <button onclick={actions.clear}>clear</button>
-  </div>
-)
+const view = (state, actions) => {
+  const pools = state.ledger.reduce(
+    (acc, [from, to]) => ({
+      ...acc,
+      [from]: acc[from] - 1,
+      [to]: acc[to] + 1
+    }),
+    state.pools
+  )
+
+  return (
+    <div class={`counter ${state.dragging ? 'dragging' : ''}`}>
+      <Pool
+        name="auraTop"
+        limit={5}
+        src={state.src}
+        dst={state.dst}
+        dragging={state.dragging}
+        value={pools.auraTop}
+        {...actions}
+      />
+      <Pool
+        name="shadow"
+        src={state.src}
+        dst={state.dst}
+        dragging={state.dragging}
+        value={pools.shadow}
+        {...actions}
+      />
+      <Pool
+        name="distance"
+        limit={10}
+        src={state.src}
+        dst={state.dst}
+        dragging={state.dragging}
+        value={pools.distance}
+        {...actions}
+      />
+      <h1>{state.dragging ? 'Dragging' : ''}</h1>
+      <button onclick={actions.clear}>clear</button>
+    </div>
+  )
+}
 
 export default view
