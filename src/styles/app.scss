@@ -30,5 +30,13 @@ body {
         &.invalid-src,&.invalid-dst{
             background-color: red;
         }
+        &.empty:hover{
+            background-color: lightgrey;
+            color: darkgrey;
+        }
+    }
+    &.dragging .empty.pool:hover {
+        background-color: inherit;
+        color: $color-text;
     }
 }

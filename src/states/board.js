@@ -1,16 +1,17 @@
 const state = {
   pools: {
-    distance: { value: 10 },
-    shadow: { value: 0 },
-    lifeTop: { value: 8 },
-    lifeBottom: { value: 8 },
-    auraTop: { value: 3 },
-    auraBottom: { value: 3 },
-    flareTop: { value: 0 },
-    flareBottom: { value: 0 }
+    distance: 10,
+    shadow: 0,
+    lifeTop: 8,
+    lifeBottom: 8,
+    auraTop: 3,
+    auraBottom: 3,
+    flareTop: 0,
+    flareBottom: 0
   },
   dragging: false,
-  subject: null
+  subject: null,
+  ledger: []
 }
 
 export default state

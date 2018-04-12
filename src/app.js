@@ -4,15 +4,14 @@ import actions from './actions/board'
 import state from './states/board'
 import view from './views/board'
 import { withLogger } from '@hyperapp/logger'
-import { enhance } from 'hyperapp-middleware'
 
-function mw(nextApp) {
+function storePools(nextApp) {
   return function(state, actions, view, elem) {
     state.pools = JSON.parse(sessionStorage.getItem('pools')) || state.pools
     const newActions = {
       ...actions,
-      stopDrag: name => state => {
-        const newState = actions.stopDrag(name)(state)
+      stopDrag: dst => state => {
+        const newState = actions.stopDrag(dst)(state)
         sessionStorage.setItem('pools', JSON.stringify(newState.pools))
         return newState
       },
@@ -22,4 +21,4 @@ function mw(nextApp) {
   }
 }
 
-mw(withLogger(app))(state, actions, view, document.body)
+storePools(withLogger(app))(state, actions, view, document.body)

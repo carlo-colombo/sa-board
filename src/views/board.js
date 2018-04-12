@@ -2,6 +2,7 @@ import { h } from 'hyperapp'
 
 function Pool({
   name,
+  dragging,
   startDrag,
   value,
   stopDrag,
@@ -36,14 +37,16 @@ function Pool({
 
   const className = [
     'pool',
+    'pool-' + name,
     name.includes('Top') ? 'flip' : '',
-    name,
+    value == 0 ? 'empty' : '',
     src == name && value == 0 ? 'invalid-src' : '',
     dst == name && value == limit ? 'invalid-dst' : ''
   ].join(' ')
 
   const mouseup = name => () =>
     value < (limit || Infinity) ? stopDrag(name) : reset()
+  const mousedown = name => () => (value != 0 ? startDrag(name) : reset())
 
   return (
     <div
@@ -51,9 +54,9 @@ function Pool({
       data-name={name}
       data-limit={limit}
       data-value={value}
-      onmousedown={() => startDrag(name)}
+      onmousedown={mousedown(name)}
       onmouseup={mouseup(name)}
-      onmouseover={() => over(name)}
+      onmouseover={() => (dragging ? over(name) : null)}
       ontouchstart={touchstart}
       ontouchend={touchend}
       ontouchmove={touchmove}
@@ -66,20 +69,22 @@ function Pool({
 }
 
 const view = (state, actions) => (
-  <div class="counter">
+  <div class={`counter ${state.dragging ? 'dragging' : ''}`}>
     <Pool
       name="auraTop"
       limit={5}
       src={state.src}
       dst={state.dst}
+      dragging={state.dragging}
+      value={state.pools.auraTop}
       {...actions}
-      {...state.pools.auraTop}
     />
     <Pool
       name="shadow"
       src={state.src}
       dst={state.dst}
-      {...state.pools.shadow}
+      dragging={state.dragging}
+      value={state.pools.shadow}
       {...actions}
     />
     <Pool
@@ -87,8 +92,9 @@ const view = (state, actions) => (
       limit={10}
       src={state.src}
       dst={state.dst}
+      dragging={state.dragging}
+      value={state.pools.distance}
       {...actions}
-      {...state.pools.distance}
     />
     <h1>{state.dragging ? 'Dragging' : ''}</h1>
     <button onclick={actions.clear}>clear</button>

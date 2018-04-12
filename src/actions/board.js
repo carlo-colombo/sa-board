@@ -1,13 +1,10 @@
 const actions = {
-  startDrag: src => state => {
-    return {
-      src,
-      dragging: true,
-      invalidSrc: state.pools[src].value == 0 ? src : null
-    }
-  },
+  startDrag: src => state => ({
+    src,
+    dragging: true
+  }),
   stopDrag: dst => state => {
-    if (state.pools[state.src].value == 0 || dst == state.src) {
+    if (dst == state.src && state.src != null) {
       console.log('bailing out')
       return actions.reset()()
     }
@@ -19,17 +16,16 @@ const actions = {
       dst: null,
       pools: {
         ...state.pools,
-        [state.src]: { value: state.pools[state.src].value - 1 },
-        [dst]: { value: state.pools[dst].value + 1 }
-      }
+        [state.src]: state.pools[state.src] - 1,
+        [dst]: state.pools[dst] + 1
+      },
+      ledger: [...state.ledger, [state.src, dst]]
     }
   },
-  over: dst => state => {
-    return {
-      dst: state.dragging && dst != state.src ? dst : null
-    }
-  },
-  reset: () => state => ({ src: null, dst: null, dragging: false })
+  over: dst => state => ({
+    dst: state.dragging && dst != state.src ? dst : null
+  }),
+  reset: () => () => ({ src: null, dst: null, dragging: false })
 }
 
 export default actions
