@@ -26,9 +26,11 @@ function Pool({
       changedTouch.clientX,
       changedTouch.clientY
     )
-    return cb(target)
+    return cb(target.closest('.pool'))
   }
-  const touchmove = touchWrap(target => over(target.dataset.name))
+  const touchmove = touchWrap(
+    target => (dragging ? over(target.dataset.name) : null)
+  )
   const touchend = touchWrap(
     target =>
       parseInt(target.dataset.value) < (target.dataset.limit || Infinity)
@@ -65,7 +67,7 @@ function Pool({
       onmousedown={mousedown(name)}
       onmouseup={mouseup(name)}
       onmouseover={() => (dragging ? over(name) : null)}
-      ontouchstart={touchstart}
+      ontouchstart={mousedown(name)}
       ontouchend={touchend}
       ontouchmove={touchmove}
     >
