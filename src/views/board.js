@@ -31,7 +31,7 @@ function Pool({
   const touchmove = touchWrap(target => over(target.dataset.name))
   const touchend = touchWrap(
     target =>
-      target.dataset.value < (parseInt(target.dataset.limit) || Infinity)
+      parseInt(target.dataset.value) < (target.dataset.limit || Infinity)
         ? stopDrag(target.dataset.name)
         : reset()
   )
