@@ -13,11 +13,6 @@ function Pool({
   reset,
   renderer
 }) {
-  function touchstart(e) {
-    e.preventDefault()
-    return startDrag(name)
-  }
-
   const touchWrap = cb => e => {
     e.preventDefault()
 
@@ -38,6 +33,10 @@ function Pool({
         : reset()
   )
 
+  const mouseup = name => () =>
+    value < (limit || Infinity) ? stopDrag(name) : reset()
+  const mousedown = () => (value != 0 ? startDrag(name) : reset())
+
   const className = [
     'pool',
     'pool-' + name,
@@ -46,10 +45,6 @@ function Pool({
     src == name && value == 0 ? 'invalid-src' : '',
     dst == name && value == limit ? 'invalid-dst' : ''
   ].join(' ')
-
-  const mouseup = name => () =>
-    value < (limit || Infinity) ? stopDrag(name) : reset()
-  const mousedown = name => () => (value != 0 ? startDrag(name) : reset())
 
   const defaultRenderer = (
     <div>
@@ -64,10 +59,10 @@ function Pool({
       data-name={name}
       data-limit={limit}
       data-value={value}
-      onmousedown={mousedown(name)}
+      onmousedown={mousedown}
       onmouseup={mouseup(name)}
       onmouseover={() => (dragging ? over(name) : null)}
-      ontouchstart={mousedown(name)}
+      ontouchstart={mousedown}
       ontouchend={touchend}
       ontouchmove={touchmove}
     >
