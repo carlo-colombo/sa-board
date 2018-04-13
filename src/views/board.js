@@ -74,13 +74,13 @@ function Pool({
   )
 }
 
-const Shadow = ({ value }) => {
+const Distance = ({ value }) => {
   const steps = new Array(10).fill().map((v, i) => {
     const classes = ['step', i + 1 <= value ? 'fill' : '', `step${i}`].join(' ')
     return <div class={classes} key={i + 1} />
   })
 
-  return <div class="shadow">{steps}</div>
+  return <div class="distance">{steps}</div>
 }
 
 const view = ({ ledger, board, pools: startingPools }, actions) => {
@@ -107,11 +107,9 @@ const view = ({ ledger, board, pools: startingPools }, actions) => {
       <Pool
         name="shadow"
         value={pools.shadow}
-        limit={10}
         {...board}
         stopDrag={actions.stopDrag}
         {...actions.board}
-        renderer={Shadow}
       />
       <Pool
         name="distance"
@@ -120,6 +118,7 @@ const view = ({ ledger, board, pools: startingPools }, actions) => {
         {...board}
         stopDrag={actions.stopDrag}
         {...actions.board}
+        renderer={Distance}
       />
       <h1>{board.dragging ? 'Dragging' : ''}</h1>
     </div>

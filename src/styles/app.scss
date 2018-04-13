@@ -43,8 +43,8 @@ body {
         color: $color-text;
     }
 
-    .pool-shadow{
-        .shadow{
+    .pool-distance{
+        .distance{
             display: flex;
         }
         .step{
@@ -52,6 +52,7 @@ body {
             width: 10%;
             height: 100px;
             margin: 2px;
+            border: solid 1px black;
             &.fill{
                 background-color: black;
             }
