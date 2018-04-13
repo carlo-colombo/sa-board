@@ -1,23 +1,25 @@
 const actions = {
-  startDrag: src => state => ({
-    src,
-    dragging: true
-  }),
-  stopDrag: dst => state => {
-    if (dst == state.src && state.src != null) {
+  board: {
+    startDrag: src => () => ({
+      src,
+      dragging: true
+    }),
+    over: dst => ({ dragging, src }) => ({
+      dst: dragging && dst != src ? dst : null
+    }),
+    reset: () => () => ({ src: null, dst: null, dragging: false })
+  },
+  stopDrag: dst => ({ board: { src }, ledger }) => {
+    if (dst == src || src == null || dst == null) {
       console.log('bailing out')
-      return actions.reset()()
+      return { board: actions.board.reset()() }
     }
 
     return {
-      ...actions.reset()(),
-      ledger: [...state.ledger, [state.src, dst]]
+      board: actions.board.reset()(),
+      ledger: [...ledger, [src, dst]]
     }
-  },
-  over: dst => state => ({
-    dst: state.dragging && dst != state.src ? dst : null
-  }),
-  reset: () => () => ({ src: null, dst: null, dragging: false })
+  }
 }
 
 export default actions

@@ -68,46 +68,43 @@ function Pool({
   )
 }
 
-const view = (state, actions) => {
-  const pools = state.ledger.reduce(
+const view = ({ ledger, board, pools: startingPools }, actions) => {
+  const pools = ledger.reduce(
     (acc, [from, to]) => ({
       ...acc,
       [from]: acc[from] - 1,
       [to]: acc[to] + 1
     }),
-    state.pools
+    startingPools
   )
 
   return (
-    <div class={`counter ${state.dragging ? 'dragging' : ''}`}>
+    <div class={`board ${board.dragging ? 'dragging' : ''}`}>
+      <button onclick={actions.clear}>clear</button>
       <Pool
         name="auraTop"
         limit={5}
-        src={state.src}
-        dst={state.dst}
-        dragging={state.dragging}
         value={pools.auraTop}
-        {...actions}
+        {...board}
+        stopDrag={actions.stopDrag}
+        {...actions.board}
       />
       <Pool
         name="shadow"
-        src={state.src}
-        dst={state.dst}
-        dragging={state.dragging}
         value={pools.shadow}
-        {...actions}
+        {...board}
+        stopDrag={actions.stopDrag}
+        {...actions.board}
       />
       <Pool
         name="distance"
         limit={10}
-        src={state.src}
-        dst={state.dst}
-        dragging={state.dragging}
         value={pools.distance}
-        {...actions}
+        {...board}
+        stopDrag={actions.stopDrag}
+        {...actions.board}
       />
-      <h1>{state.dragging ? 'Dragging' : ''}</h1>
-      <button onclick={actions.clear}>clear</button>
+      <h1>{board.dragging ? 'Dragging' : ''}</h1>
     </div>
   )
 }

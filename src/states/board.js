@@ -9,8 +9,11 @@ const state = {
     flareTop: 0,
     flareBottom: 0
   },
-  dragging: false,
-  subject: null,
+  board: {
+    dragging: false,
+    src: null,
+    dst: null
+  },
   ledger: []
 }
 

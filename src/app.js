@@ -12,7 +12,10 @@ function persistLedger(nextApp) {
       ...actions,
       stopDrag: dst => state => {
         const newState = actions.stopDrag(dst)(state)
-        sessionStorage.setItem('ledger', JSON.stringify(newState.ledger))
+        sessionStorage.setItem(
+          'ledger',
+          JSON.stringify({ ...state, ...newState }.ledger)
+        )
         return newState
       },
       clear: () => () => sessionStorage.setItem('ledger', null)
