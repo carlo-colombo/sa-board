@@ -10,7 +10,8 @@ function Pool({
   src,
   dst,
   over,
-  reset
+  reset,
+  renderer
 }) {
   function touchstart(e) {
     e.preventDefault()
@@ -48,6 +49,13 @@ function Pool({
     value < (limit || Infinity) ? stopDrag(name) : reset()
   const mousedown = name => () => (value != 0 ? startDrag(name) : reset())
 
+  const defaultRenderer = (
+    <div>
+      {name}: {value}
+      <br />
+      limit: {limit}
+    </div>
+  )
   return (
     <div
       class={className}
@@ -61,11 +69,18 @@ function Pool({
       ontouchend={touchend}
       ontouchmove={touchmove}
     >
-      {name}: {value}
-      <br />
-      limit: {limit}
+      {renderer ? renderer({ value }) : defaultRenderer}
     </div>
   )
+}
+
+const Shadow = ({ value }) => {
+  const steps = new Array(10).fill().map((v, i) => {
+    const classes = ['step', i + 1 <= value ? 'fill' : '', `step${i}`].join(' ')
+    return <div class={classes} key={i + 1} />
+  })
+
+  return <div class="shadow">{steps}</div>
 }
 
 const view = ({ ledger, board, pools: startingPools }, actions) => {
@@ -92,9 +107,11 @@ const view = ({ ledger, board, pools: startingPools }, actions) => {
       <Pool
         name="shadow"
         value={pools.shadow}
+        limit={10}
         {...board}
         stopDrag={actions.stopDrag}
         {...actions.board}
+        renderer={Shadow}
       />
       <Pool
         name="distance"

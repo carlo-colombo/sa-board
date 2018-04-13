@@ -42,4 +42,19 @@ body {
         background-color: inherit;
         color: $color-text;
     }
+
+    .pool-shadow{
+        .shadow{
+            display: flex;
+        }
+        .step{
+            display:inline;
+            width: 10%;
+            height: 100px;
+            margin: 2px;
+            &.fill{
+                background-color: black;
+            }
+        }
+    }
 }
