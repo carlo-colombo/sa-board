@@ -73,7 +73,12 @@ function Pool({
 
 const Distance = ({ value }) => {
   const steps = new Array(10).fill().map((v, i) => {
-    const classes = ['step', i + 1 <= value ? 'fill' : '', `step${i}`].join(' ')
+    const offset = (10 - value) / 2
+    const classes = [
+      'step',
+      i + 1 <= value + offset && i + 1 > offset ? 'fill' : '',
+      `step${i}`
+    ].join(' ')
     return <div class={classes} key={i + 1} />
   })
 
