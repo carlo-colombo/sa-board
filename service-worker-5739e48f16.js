@@ -1,0 +1,1 @@
+self.addEventListener("install",function(e){e.waitUntil(caches.open("board").then(function(e){return e.addAll(["/app-cdd5eb03c6.js","/app-2a01bf1ce6.css","/"])}))}),self.addEventListener("fetch",function(e){e.respondWith(fetch(e.request).catch(function(){return caches.match(e.request)}))});
