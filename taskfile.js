@@ -1,4 +1,5 @@
-const browserSync = require('browser-sync')
+const browserSync = require('browser-sync'),
+  ghpages = require('gh-pages')
 
 let isWatching = false
 
@@ -17,6 +18,7 @@ export async function clean(taskr) {
 }
 
 export async function copyStaticAssets(taskr, o) {
+  console.log('*************', o, o.src)
   await taskr.source(o.src || src.staticAssets).target(target)
 }
 
@@ -108,6 +110,16 @@ export async function release(taskr) {
     .target(releaseTarget)
 }
 
+const publishTask = folder =>
+  new Promise(function(res, rej) {
+    ghpages.publish(folder, err => (err ? rej(err) : res()))
+  })
+
+export async function publish(taskr) {
+  await taskr.start('release')
+  await publishTask(releaseTarget)
+}
+
 export async function watch(taskr) {
   isWatching = true
   await taskr.start('build')
@@ -116,6 +128,7 @@ export async function watch(taskr) {
   await taskr.watch(src.staticAssets, ['copyStaticAssets', 'reload'])
   // start server
   browserSync({
+    https: true,
     server: target,
     logPrefix: 'hyperapp',
     port: process.env.PORT || 4000,
