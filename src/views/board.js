@@ -1,5 +1,7 @@
 import { h } from 'hyperapp'
 
+import Token from './token.js'
+
 function Pool({
   name,
   dragging,
@@ -79,7 +81,11 @@ const Distance = ({ value }) => {
       i + 1 <= value + offset && i + 1 > offset ? 'fill' : '',
       `step${i}`
     ].join(' ')
-    return <div class={classes} key={i + 1} />
+    return (
+      <div class={classes} key={i + 1}>
+        <Token />
+      </div>
+    )
   })
 
   return <div class="distance">{steps}</div>
@@ -97,30 +103,46 @@ const view = ({ ledger, board, pools: startingPools }, actions) => {
 
   return (
     <div class={`board ${board.dragging ? 'dragging' : ''}`}>
-      <button onclick={actions.clear}>clear</button>
-      <Pool
-        name="auraTop"
-        limit={5}
-        value={pools.auraTop}
-        {...board}
-        stopDrag={actions.stopDrag}
-        {...actions.board}
-      />
+      <div class="player-area flip">
+        <Pool
+          name="auraTop"
+          limit={5}
+          value={pools.auraTop}
+          stopDrag={actions.stopDrag}
+          {...board}
+          {...actions.board}
+        />
+
+        <Pool
+          name="lifeTop"
+          value={pools.lifeTop}
+          stopDrag={actions.stopDrag}
+          {...board}
+          {...actions.board}
+        />
+        <Pool
+          name="flareTop"
+          value={pools.flareTop}
+          stopDrag={actions.stopDrag}
+          {...board}
+          {...actions.board}
+        />
+      </div>
       <Pool
         name="shadow"
         value={pools.shadow}
-        {...board}
         stopDrag={actions.stopDrag}
+        {...board}
         {...actions.board}
       />
       <Pool
         name="distance"
         limit={10}
         value={pools.distance}
-        {...board}
         stopDrag={actions.stopDrag}
-        {...actions.board}
         renderer={Distance}
+        {...board}
+        {...actions.board}
       />
       <h1>{board.dragging ? 'Dragging' : ''}</h1>
     </div>

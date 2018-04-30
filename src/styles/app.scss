@@ -27,9 +27,6 @@ body {
         padding: 5px;
         border: solid 1px black;
         user-select: none;
-        &.flip{
-            transform: rotate(180deg)
-        }
         &.invalid-src,&.invalid-dst{
             background-color: red;
         }
@@ -49,13 +46,20 @@ body {
         }
         .step{
             display:inline;
+            position: relative;
             width: 10%;
             height: 100px;
             margin: 2px;
             border: solid 1px black;
             &.fill{
-                background-color: black;
+                background-color: pink;
             }
         }
     }
+    .player-area{
+        &.flip{
+            transform: rotate(180deg)
+        }
+    }
 }
+
