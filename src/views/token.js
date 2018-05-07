@@ -14,15 +14,6 @@ export default () => (
       height: '100%'
     }}
   >
-    <metadata>
-      <rdf:RDF>
-        <cc:Work rdf:about="">
-          <dc:format>image/svg+xml</dc:format>
-          <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-          <dc:title />
-        </cc:Work>
-      </rdf:RDF>
-    </metadata>
     <g transform="translate(-13.128 -80.042)">
       <path
         d="m92.226 164.71c3.9811-28.587-18.143-84.667-18.143-84.667l-21.167 21.167-21.167-21.167s-22.124 56.08-18.143 84.667c3.8559 27.688 39.31 74.083 39.31 74.083s35.454-46.395 39.31-74.083z"
