@@ -78,7 +78,7 @@ const Distance = ({ value }) => {
     const offset = (10 - value) / 2
     const classes = [
       'step',
-      i + 1 <= value + offset && i + 1 > offset ? 'fill' : '',
+      i + 1 <= value + offset && i + 1 > offset ? 'fill' : 'empty',
       `step${i}`
     ].join(' ')
     return (
