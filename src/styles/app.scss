@@ -5,26 +5,34 @@ body,
 * {
     box-sizing: border-box;
     margin: 0;
+    padding: 0;
 }
 
 body {
-    padding: 2rem;
     color: $color-text;
     font-family: $font-family;
-    font-size: 28px;
-    overflow:hidden;
+    font-size: 11px;
+    overflow: hidden;
     width:100%;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 .board {
-    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
     &.dragging{
         background-color: yellow;
     }
 
     .pool{
-        margin: 25px;
         padding: 5px;
+        height: 50%;
         border: solid 1px black;
         user-select: none;
         &.invalid-src,&.invalid-dst{
@@ -48,7 +56,7 @@ body {
             display:inline;
             position: relative;
             width: 10%;
-            height: 100px;
+            height: 80px;
             margin: 2px;
             &.empty{
                 svg {
@@ -57,7 +65,24 @@ body {
             }
         }
     }
+    .common-area{
+        height: 30%;
+    }
     .player-area{
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+        height: 35%;
+        .pool-life {
+            width: 100%;
+        }
+        .pool-aura, .pool-flare {
+            width: 50%;
+        }
+        .pool {
+            height: 50%;
+        }
+
         &.flip{
             transform: rotate(180deg)
         }
