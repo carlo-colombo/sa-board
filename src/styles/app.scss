@@ -11,7 +11,7 @@ body,
 body {
     color: $color-text;
     font-family: $font-family;
-    font-size: 11px;
+    font-size: 30px;
     overflow: hidden;
     width:100%;
 }
@@ -27,13 +27,18 @@ html, body {
     height: 100%;
 
     &.dragging{
-        background-color: yellow;
+        background-color: lightyellow;
     }
 
     .pool{
+        > div{
+            margin: 1px;
+            border: solid 1px black;
+            height: 100%;
+            padding: 5px;
+        }
         padding: 5px;
         height: 50%;
-        border: solid 1px black;
         user-select: none;
         &.invalid-src,&.invalid-dst{
             background-color: red;

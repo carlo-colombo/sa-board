@@ -36,11 +36,12 @@ export default function Pool({
   const mouseup = name => () =>
     value < (limit || Infinity) ? stopDrag(name) : reset()
   const mousedown = () => (value != 0 ? startDrag(name) : reset())
+  const label = name.replace(/(Top|Bottom)$/, '')
 
   const className = [
     'pool',
     'pool-' + name,
-    'pool-' + name.replace(/(Top|Bottom)$/, ''),
+    'pool-' + label,
     value == 0 ? 'empty' : '',
     src == name && value == 0 ? 'invalid-src' : '',
     dst == name && value == limit ? 'invalid-dst' : ''
@@ -48,8 +49,7 @@ export default function Pool({
 
   const defaultRenderer = (
     <div>
-      <div>{name}</div>
-      {value}/{limit ? limit : '∞'}
+      {label}: {value}/{limit ? limit : '∞'}
     </div>
   )
   return (
