@@ -41,32 +41,12 @@ const view = ({ ledger, board, pools: startingPools }, actions) => {
 
   return (
     <div class={`board ${board.dragging ? 'dragging' : ''}`}>
-      <PlayerArea player="Top" pools={pools} board={board} actions={actions} />
+      <PlayerArea player="Top" pools={pools} />
       <div class="common-area">
-        <Pool
-          name="shadow"
-          value={pools.shadow}
-          renderer={Shadow}
-          stopDrag={actions.stopDrag}
-          {...board}
-          {...actions.board}
-        />
-        <Pool
-          name="distance"
-          limit={10}
-          value={pools.distance}
-          stopDrag={actions.stopDrag}
-          renderer={Distance}
-          {...board}
-          {...actions.board}
-        />
+        <Pool name="shadow" pools={pools} renderer={Shadow} />
+        <Pool name="distance" limit={10} pools={pools} renderer={Distance} />
       </div>
-      <PlayerArea
-        player="Bottom"
-        pools={pools}
-        board={board}
-        actions={actions}
-      />
+      <PlayerArea player="Bottom" pools={pools} />
     </div>
   )
 }
