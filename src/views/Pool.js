@@ -1,8 +1,8 @@
 import { h } from 'hyperapp'
 
-export default function Pool({ name, pools, renderer, limit }) {
+export default function Pool({ name, renderer, limit }) {
   return (
-    { dragging, src, dst },
+    { board: { dragging, src, dst }, pools },
     { board: { over, reset, startDrag }, stopDrag }
   ) => {
     const value = pools[name]

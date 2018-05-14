@@ -29,24 +29,15 @@ const Shadow = ({ value, label, limit }) => {
   )
 }
 
-const view = ({ ledger, board, pools: startingPools }, actions) => {
-  const pools = ledger.reduce(
-    (acc, [from, to]) => ({
-      ...acc,
-      [from]: acc[from] - 1,
-      [to]: acc[to] + 1
-    }),
-    startingPools
-  )
-
+const view = ({ board }, actions) => {
   return (
     <div class={`board ${board.dragging ? 'dragging' : ''}`}>
-      <PlayerArea player="Top" pools={pools} />
+      <PlayerArea player="Top" />
       <div class="common-area">
-        <Pool name="shadow" pools={pools} renderer={Shadow} />
-        <Pool name="distance" limit={10} pools={pools} renderer={Distance} />
+        <Pool name="shadow" renderer={Shadow} />
+        <Pool name="distance" limit={10} renderer={Distance} />
       </div>
-      <PlayerArea player="Bottom" pools={pools} />
+      <PlayerArea player="Bottom" />
     </div>
   )
 }
