@@ -6,6 +6,7 @@ import view from './views/board'
 import { withLogger } from '@hyperapp/logger'
 
 const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)))
+const pipe = (...fns) => compose(...fns.reverse())
 const calculate = (ledger, startingPools) =>
   ledger.reduce(
     (acc, [from, to]) => ({
@@ -16,10 +17,15 @@ const calculate = (ledger, startingPools) =>
     startingPools
   )
 
-function persistLedger(nextApp) {
+const persistLedger = nextApp => (initialState, actions, view, elem) => {
   console.info('persistLedger')
-  return function(initialState, actions, view, elem) {
-    const newActions = {
+  return nextApp(
+    {
+      ...initialState,
+      ledger:
+        JSON.parse(sessionStorage.getItem('ledger')) || initialState.ledger
+    },
+    {
       ...actions,
       stopDrag: dst => state => {
         const newState = actions.stopDrag(dst)(state)
@@ -27,47 +33,35 @@ function persistLedger(nextApp) {
         return newState
       },
       clear: () => () => sessionStorage.setItem('ledger', null)
-    }
-    return nextApp.call(
-      null,
-      {
-        ...initialState,
-        ledger:
-          JSON.parse(sessionStorage.getItem('ledger')) || initialState.ledger
-      },
-      newActions,
-      view,
-      elem
-    )
-  }
+    },
+    view,
+    elem
+  )
 }
 
-function reduceLedger(nextApp) {
-  console.info('reduceLedger')
-  return function(initialState, actions, view, elem) {
-    return nextApp.call(
-      null,
-      {
-        ...initialState,
-        pools: calculate(initialState.ledger, initialState.pools)
-      },
-      {
-        ...actions,
-        stopDrag: dst => state => {
-          const newState = actions.stopDrag(dst)(state)
-          return {
-            ...newState,
-            pools: calculate(newState.ledger, initialState.pools)
-          }
+const calculatePools = nextApp => (initialState, actions, view, elem) => {
+  console.info('calculatePools')
+  return nextApp(
+    {
+      ...initialState,
+      pools: calculate(initialState.ledger, initialState.pools)
+    },
+    {
+      ...actions,
+      stopDrag: dst => state => {
+        const newState = actions.stopDrag(dst)(state)
+        return {
+          ...newState,
+          pools: calculate(newState.ledger, initialState.pools)
         }
-      },
-      view,
-      elem
-    )
-  }
+      }
+    },
+    view,
+    elem
+  )
 }
 
-compose(persistLedger, reduceLedger, withLogger)(app)(
+compose(persistLedger, calculatePools, withLogger)(app)(
   state,
   actions,
   view,
