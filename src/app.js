@@ -7,18 +7,18 @@ import { withLogger } from '@hyperapp/logger'
 
 const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)))
 const pipe = (...fns) => compose(...fns.reverse())
-const calculate = (ledger, startingPools) =>
+const calculate = ledger =>
   ledger.reduce(
     (acc, [from, to]) => ({
       ...acc,
       [from]: acc[from] - 1,
       [to]: acc[to] + 1
     }),
-    startingPools
+    state.pools
   )
 
 const persistLedger = nextApp => (initialState, actions, view, elem) => {
-  console.info('persistLedger')
+  console.log(elem, view)
   return nextApp(
     {
       ...initialState,
@@ -27,11 +27,18 @@ const persistLedger = nextApp => (initialState, actions, view, elem) => {
     },
     {
       ...actions,
-      stopDrag: dst => state => {
-        const newState = actions.stopDrag(dst)(state)
-        sessionStorage.setItem('ledger', JSON.stringify(newState.ledger))
-        return newState
-      },
+      stopDrag: dst => state =>
+        pipe(
+          actions.stopDrag(dst),
+          state => (
+            sessionStorage.setItem('ledger', JSON.stringify(state.ledger)),
+            state
+          ),
+          state => (
+            console.log('persisted ledger, length: ', state.ledger.length),
+            state
+          )
+        )(state),
       clear: () => () => sessionStorage.setItem('ledger', null)
     },
     view,
@@ -40,21 +47,22 @@ const persistLedger = nextApp => (initialState, actions, view, elem) => {
 }
 
 const calculatePools = nextApp => (initialState, actions, view, elem) => {
-  console.info('calculatePools')
   return nextApp(
     {
       ...initialState,
-      pools: calculate(initialState.ledger, initialState.pools)
+      pools: calculate(initialState.ledger)
     },
     {
       ...actions,
-      stopDrag: dst => state => {
-        const newState = actions.stopDrag(dst)(state)
-        return {
-          ...newState,
-          pools: calculate(newState.ledger, initialState.pools)
-        }
-      }
+      stopDrag: dst => state =>
+        pipe(
+          actions.stopDrag(dst),
+          state => ({
+            ...state,
+            pools: calculate(state.ledger)
+          }),
+          state => (console.log('calculated pools: ', state.pools), state)
+        )(state)
     },
     view,
     elem

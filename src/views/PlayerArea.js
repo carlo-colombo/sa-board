@@ -1,7 +1,7 @@
 import { h } from 'hyperapp'
 import Pool from './Pool.js'
 
-export default function PlayerArea({ player, pools }) {
+export default function PlayerArea({ player }) {
   return (
     <div class={`player-area ${player == 'Top' ? 'flip' : ''}`}>
       <Pool name={`aura${player}`} limit={5} />

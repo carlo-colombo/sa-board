@@ -29,7 +29,7 @@ const Shadow = ({ value, label, limit }) => {
   )
 }
 
-const view = ({ board }, actions) => {
+const view = ({ board }) => {
   return (
     <div class={`board ${board.dragging ? 'dragging' : ''}`}>
       <PlayerArea player="Top" />
