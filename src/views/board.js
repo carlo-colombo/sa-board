@@ -6,19 +6,27 @@ import Pool from './Pool.js'
 const Distance = ({ value }) => {
   const steps = new Array(10).fill().map((v, i) => {
     const offset = (10 - value) / 2
-    const classes = [
-      'step',
-      i + 1 <= value + offset && i + 1 > offset ? 'fill' : 'empty',
-      `step${i}`
-    ].join(' ')
+    const visible = i + 1 <= value + offset && i + 1 > offset
+    const classes = ['step', `step${i}`, i % 2 == 0 ? 'flip' : ''].join(' ')
+
     return (
       <div class={classes} key={i + 1}>
-        <Token />
+        <Token visible={visible} />
       </div>
     )
   })
 
-  return <div class="distance">{steps}</div>
+  return <div class="distance pool-content">{steps}</div>
+}
+
+const Shadow = ({ value, label, limit }) => {
+  const text = `${label}: ${value}/${limit ? limit : '∞'}`
+  return (
+    <div class="pool-content shadow-renderer">
+      <div>{text}</div>
+      <div class="flip">{text}</div>
+    </div>
+  )
 }
 
 const view = ({ ledger, board, pools: startingPools }, actions) => {
@@ -38,6 +46,7 @@ const view = ({ ledger, board, pools: startingPools }, actions) => {
         <Pool
           name="shadow"
           value={pools.shadow}
+          renderer={Shadow}
           stopDrag={actions.stopDrag}
           {...board}
           {...actions.board}

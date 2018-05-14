@@ -48,7 +48,7 @@ export default function Pool({
   ].join(' ')
 
   const defaultRenderer = (
-    <div>
+    <div class="default-renderer pool-content">
       {label}: {value}/{limit ? limit : '∞'}
     </div>
   )
@@ -65,7 +65,7 @@ export default function Pool({
       ontouchend={touchend}
       ontouchmove={touchmove}
     >
-      {renderer ? renderer({ value }) : defaultRenderer}
+      {renderer ? renderer({ value, label, limit }) : defaultRenderer}
     </div>
   )
 }

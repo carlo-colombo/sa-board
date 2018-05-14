@@ -26,22 +26,31 @@ html, body {
     flex-direction: column;
     height: 100%;
 
-    &.dragging{
-        background-color: lightyellow;
-    }
-
     .pool{
-        > div{
+        .pool-content{
+            border: solid 1px lightgray;
             margin: 1px;
-            border: solid 1px black;
+            height: 100%;
+        }
+        .default-renderer{
+            margin: 1px;
             height: 100%;
             padding: 5px;
+            text-align: center;
+            padding-top: 20px;
+        }
+        .shadow-renderer {
+            padding: 5px;
+            div {
+                padding: 20px 0 0 20px;
+                height: 50%;
+            }
         }
         padding: 5px;
         height: 50%;
         user-select: none;
         &.invalid-src,&.invalid-dst{
-            background-color: red;
+            background-color: lightsalmon;
         }
         &.empty:hover{
             background-color: lightgrey;
@@ -61,23 +70,28 @@ html, body {
             display:inline;
             position: relative;
             width: 10%;
-            height: 80px;
+            height: 70%;
             margin: 2px;
-            &.empty{
-                svg {
-                    display: none;
-                }
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            &.flip{
+                transform: translateY(-50%) rotate(180deg)
             }
         }
     }
     .common-area{
-        height: 30%;
+        height: 40%;
     }
     .player-area{
         display: flex;
         flex-flow: row wrap;
         justify-content: space-around;
         height: 35%;
+        background-color: #dadaff;
+        &.flip{
+            background-color: #f9ffa9;
+        }
         .pool-life {
             width: 100%;
         }
@@ -86,11 +100,13 @@ html, body {
         }
         .pool {
             height: 50%;
-        }
-
-        &.flip{
-            transform: rotate(180deg)
+            .default-renderer{
+                border: solid 1px black;
+            }
         }
     }
 }
 
+.flip{
+    transform: rotate(180deg)
+}
