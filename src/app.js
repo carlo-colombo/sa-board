@@ -17,29 +17,32 @@ const calculate = ledger =>
     state.pools
   )
 
-const persistLedger = nextApp => (initialState, actions, view, elem) => {
-  console.log(elem, view)
+const persistLedger = storage => nextApp => (
+  initialState,
+  actions,
+  view,
+  elem
+) => {
   return nextApp(
     {
       ...initialState,
-      ledger:
-        JSON.parse(sessionStorage.getItem('ledger')) || initialState.ledger
+      ledger: JSON.parse(storage.getItem('ledger')) || initialState.ledger
     },
     {
       ...actions,
-      stopDrag: dst => state =>
+      dropToken: dst => state =>
         pipe(
-          actions.stopDrag(dst),
+          actions.dropToken(dst),
+          newState => ({ ...state, ...newState }),
           state => (
-            sessionStorage.setItem('ledger', JSON.stringify(state.ledger)),
-            state
+            storage.setItem('ledger', JSON.stringify(state.ledger)), state
           ),
           state => (
             console.log('persisted ledger, length: ', state.ledger.length),
             state
           )
         )(state),
-      clear: () => () => sessionStorage.setItem('ledger', null)
+      clear: () => () => storage.setItem('ledger', null)
     },
     view,
     elem
@@ -54,9 +57,10 @@ const calculatePools = nextApp => (initialState, actions, view, elem) => {
     },
     {
       ...actions,
-      stopDrag: dst => state =>
+      dropToken: dst => state =>
         pipe(
-          actions.stopDrag(dst),
+          actions.dropToken(dst),
+          newState => ({ ...state, ...newState }),
           state => ({
             ...state,
             pools: calculate(state.ledger)
@@ -69,7 +73,7 @@ const calculatePools = nextApp => (initialState, actions, view, elem) => {
   )
 }
 
-compose(persistLedger, calculatePools, withLogger)(app)(
+compose(persistLedger(sessionStorage), calculatePools, withLogger)(app)(
   state,
   actions,
   view,

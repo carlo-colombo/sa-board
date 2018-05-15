@@ -3,7 +3,7 @@ import { h } from 'hyperapp'
 export default function Pool({ name, renderer, limit }) {
   return (
     { board: { dragging, src, dst }, pools },
-    { board: { over, reset, startDrag }, stopDrag }
+    { board: { over, reset, startDrag }, dropToken }
   ) => {
     const value = pools[name]
     const touchWrap = cb => e => {
@@ -22,12 +22,12 @@ export default function Pool({ name, renderer, limit }) {
     const touchend = touchWrap(
       target =>
         parseInt(target.dataset.value) < (target.dataset.limit || Infinity)
-          ? stopDrag(target.dataset.name)
+          ? dropToken(target.dataset.name)
           : reset()
     )
 
     const mouseup = name => () =>
-      value < (limit || Infinity) ? stopDrag(name) : reset()
+      value < (limit || Infinity) ? dropToken(name) : reset()
     const mousedown = () => (value != 0 ? startDrag(name) : reset())
     const label = name.replace(/(Top|Bottom)$/, '')
 

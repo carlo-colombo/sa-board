@@ -9,7 +9,7 @@ const actions = {
     }),
     reset: () => () => ({ src: null, dst: null, dragging: false })
   },
-  stopDrag: dst => ({ board: { src }, ledger }) => {
+  dropToken: dst => ({ board: { src }, ledger }) => {
     if (dst == src || src == null || dst == null) {
       console.log('bailing out')
       return { board: actions.board.reset()() }
