@@ -29,7 +29,7 @@ importScripts("sw/sw-toolbox.js","sw/runtime-caching.js");
 
 
 /* eslint-disable quotes, comma-spacing */
-var PrecacheConfig = [["app-2a01bf1ce6.css","2a01bf1ce64e18cc00df87cc24af347a"],["app-cdd5eb03c6.js","8c761dc19b3f8c34e3a6fb607da5cf6d"],["index.html","f2d6672a2d4a77ce25b3dd15c06032e1"],["service-worker-5739e48f16.js","c1d1c809820035df52be736e9c0b9004"],["service-worker.js","fb1418e3f46ddaa80a24fbb49084fb1a"],["sw/runtime-caching.js","8ed5fe5dde1ab86b87f9091194ca3a21"],["sw/sw-toolbox.js","2770efb889cc10c4de88d0b746c2a13c"]];
+var PrecacheConfig = [["app-150196aa34.js","f14904a60c054b63cebe058f25b44e57"],["app-ff11e1b0d2.css","ff11e1b0d201b6c17f272468752e7f0d"],["index.html","b1d8d4a62c49d3822abf7af570d2322d"],["service-worker-5739e48f16.js","bdb78ea42910d9d48769138ceb0a5a9f"]];
 /* eslint-enable quotes, comma-spacing */
 var CacheNamePrefix = 'sw-precache-v1--' + (self.registration ? self.registration.scope : '') + '-';
 
@@ -38,7 +38,7 @@ var IgnoreUrlParametersMatching = [/^utm_/];
 
 
 
-var addDirectoryIndex = function (originalUrl, index) {
+var addDirectoryIndex = function(originalUrl, index) {
     var url = new URL(originalUrl);
     if (url.pathname.slice(-1) === '/') {
       url.pathname += index;
@@ -46,7 +46,7 @@ var addDirectoryIndex = function (originalUrl, index) {
     return url.toString();
   };
 
-var getCacheBustedUrl = function (url, now) {
+var getCacheBustedUrl = function(url, now) {
     now = now || Date.now();
 
     var urlWithCacheBusting = new URL(url);
@@ -55,7 +55,7 @@ var getCacheBustedUrl = function (url, now) {
     return urlWithCacheBusting.toString();
   };
 
-var populateCurrentCacheNames = function (precacheConfig,
+var populateCurrentCacheNames = function(precacheConfig,
     cacheNamePrefix, baseUrl) {
     var absoluteUrlToCacheName = {};
     var currentCacheNamesToAbsoluteUrl = {};
@@ -73,7 +73,7 @@ var populateCurrentCacheNames = function (precacheConfig,
     };
   };
 
-var stripIgnoredUrlParameters = function (originalUrl,
+var stripIgnoredUrlParameters = function(originalUrl,
     ignoreUrlParametersMatching) {
     var url = new URL(originalUrl);
 
