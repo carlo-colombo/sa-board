@@ -128,7 +128,7 @@ export async function watch(taskr) {
   await taskr.watch(src.staticAssets, ['copyStaticAssets', 'reload'])
   // start server
   browserSync({
-    https: true,
+    startPath: 'sa-board',
     server: target,
     logPrefix: 'hyperapp',
     port: process.env.PORT || 4000,
