@@ -14,7 +14,11 @@ const state = {
     src: null,
     dst: null
   },
-  ledger: []
+  ledger: [],
+  vigor: {
+    top: 0,
+    bottom: 1
+  }
 }
 
 export default state

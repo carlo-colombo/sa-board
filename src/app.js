@@ -17,7 +17,33 @@ const calculate = ledger =>
     state.pools
   )
 
-const persistLedger = storage => nextApp => (
+function augmentActions(actions, storage, key, [action, ...rest], getState) {
+  if (rest.length > 0) {
+    return {
+      ...actions,
+      [action]: augmentActions(actions[action], storage, key, rest, getState)
+    }
+  } else {
+    return {
+      ...actions,
+      [action]: function(...args) {
+        return state =>
+          pipe(
+            actions[action].apply(null, args),
+            newState => ({ ...state, ...newState }),
+            state => (
+              storage.setItem(key, JSON.stringify(getState(state))),
+              console.log(`persisted ${key} into storage`),
+              state
+            )
+          )(state)
+      },
+      clear: () => () => storage.setItem(key, null)
+    }
+  }
+}
+
+const persist = (storage, key, action, getState = x => x) => nextApp => (
   initialState,
   actions,
   view,
@@ -26,24 +52,9 @@ const persistLedger = storage => nextApp => (
   return nextApp(
     {
       ...initialState,
-      ledger: JSON.parse(storage.getItem('ledger')) || initialState.ledger
+      [key]: JSON.parse(storage.getItem(key)) || initialState[key]
     },
-    {
-      ...actions,
-      dropToken: dst => state =>
-        pipe(
-          actions.dropToken(dst),
-          newState => ({ ...state, ...newState }),
-          state => (
-            storage.setItem('ledger', JSON.stringify(state.ledger)), state
-          ),
-          state => (
-            console.log('persisted ledger, length: ', state.ledger.length),
-            state
-          )
-        )(state),
-      clear: () => () => storage.setItem('ledger', null)
-    },
+    augmentActions(actions, storage, key, action, getState),
     view,
     elem
   )
@@ -73,9 +84,9 @@ const calculatePools = nextApp => (initialState, actions, view, elem) => {
   )
 }
 
-compose(persistLedger(sessionStorage), calculatePools, withLogger)(app)(
-  state,
-  actions,
-  view,
-  document.body
-)
+compose(
+  persist(sessionStorage, 'ledger', ['dropToken'], state => state.ledger),
+  persist(sessionStorage, 'vigor', ['vigor', 'tap']),
+  calculatePools,
+  withLogger
+)(app)(state, actions, view, document.body)

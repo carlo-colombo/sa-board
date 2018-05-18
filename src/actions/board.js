@@ -19,6 +19,9 @@ const actions = {
       board: actions.board.reset()(),
       ledger: [...ledger, [src, dst]]
     }
+  },
+  vigor: {
+    tap: player => state => ({ ...state, [player]: (state[player] + 1) % 3 })
   }
 }
 
