@@ -35,9 +35,8 @@ export async function js(taskr) {
     .rollup({
       rollup: {
         plugins: [
-          require('rollup-plugin-buble')({
-            jsx: 'h',
-            objectAssign: 'Object.assign'
+          require('rollup-plugin-babel')({
+            exclude: 'node_modules/**'
           }),
           require('rollup-plugin-commonjs')(),
           require('rollup-plugin-replace')({
