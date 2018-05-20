@@ -1,9 +1,9 @@
 import { h } from 'hyperapp'
 import Pool from './Pool.js'
 
-const Vigor = ({ player }) => ({ vigor }, { vigor: { tap } }) => {
+const Vigor = ({ player }) => ({ vigor }, { tapVigor }) => {
   return (
-    <div class="vigor" onclick={() => tap(player)}>
+    <div class="vigor" onclick={() => tapVigor(player)}>
       <div class="vigor-title">vigor</div>
       <div class="vigor-content">{vigor[player]}</div>
     </div>

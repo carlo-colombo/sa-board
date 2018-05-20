@@ -20,9 +20,13 @@ const actions = {
       ledger: [...ledger, [src, dst]]
     }
   },
-  vigor: {
-    tap: player => state => ({ ...state, [player]: (state[player] + 1) % 3 })
-  }
+  tapVigor: player => state => ({
+    ...state,
+    vigor: {
+      ...state.vigor,
+      [player]: (state.vigor[player] + 1) % 3
+    }
+  })
 }
 
 export default actions

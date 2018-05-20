@@ -17,44 +17,55 @@ const calculate = ledger =>
     state.pools
   )
 
-function augmentActions(actions, storage, key, [action, ...rest], getState) {
-  if (rest.length > 0) {
-    return {
-      ...actions,
-      [action]: augmentActions(actions[action], storage, key, rest, getState)
-    }
-  } else {
-    return {
-      ...actions,
-      [action]: function(...args) {
-        return state =>
-          pipe(
-            actions[action].apply(null, args),
-            newState => ({ ...state, ...newState }),
-            state => (
-              storage.setItem(key, JSON.stringify(getState(state))),
-              console.log(`persisted ${key} into storage`),
-              state
-            )
-          )(state)
-      },
-      clear: () => () => storage.setItem(key, null)
-    }
+function augmentActions(actions, action, after) {
+  return {
+    ...actions,
+    [action]: (...args) => state =>
+      pipe(
+        actions[action].apply(null, args),
+        newState => ({ ...state, ...newState }),
+        after
+      )(state)
   }
 }
 
-const persist = (storage, key, action, getState = x => x) => nextApp => (
+const persist = (storage, key, action) => nextApp => (
   initialState,
   actions,
   view,
   elem
 ) => {
+  const persistKey = state => (
+    storage.setItem(key, JSON.stringify(state[key])),
+    console.log(`persisted state['${key}'] into storage`),
+    state
+  )
   return nextApp(
     {
       ...initialState,
       [key]: JSON.parse(storage.getItem(key)) || initialState[key]
     },
-    augmentActions(actions, storage, key, action, getState),
+    augmentActions(actions, action, persistKey),
+    view,
+    elem
+  )
+}
+
+const updateUrl = nextApp => (initialState, actions, view, elem) => {
+  const setHash = state => (
+    (window.location.hash = btoa(JSON.stringify(state))),
+    console.log(`updated hash`),
+    state
+  )
+  return nextApp(
+    JSON.parse(
+      atob((window.location.hash.match(/#(.*)/) || [, 'ZmFsc2U='])[1])
+    ) || initialState,
+    augmentActions(
+      augmentActions(actions, 'tapVigor', setHash),
+      'dropToken',
+      setHash
+    ),
     view,
     elem
   )
@@ -84,9 +95,15 @@ const calculatePools = nextApp => (initialState, actions, view, elem) => {
   )
 }
 
+const setHash = nextApp => (initialState, actions, view, elem) => {
+  return nextApp(initialState, actions, view, elem)
+}
+
 compose(
-  persist(sessionStorage, 'ledger', ['dropToken'], state => state.ledger),
-  persist(sessionStorage, 'vigor', ['vigor', 'tap']),
+  persist(sessionStorage, 'ledger', 'dropToken'),
+  persist(sessionStorage, 'vigor', 'tapVigor'),
+  updateUrl,
+  setHash,
   calculatePools,
   withLogger
 )(app)(state, actions, view, document.body)
