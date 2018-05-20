@@ -29,7 +29,7 @@ importScripts("sw/sw-toolbox.js","sw/runtime-caching.js");
 
 
 /* eslint-disable quotes, comma-spacing */
-var PrecacheConfig = [["app-69dbe5a228.js","a7d1d2f4edcf019c1861aef06b735a44"],["app-a48229f3a1.css","a48229f3a11083fe9befee76136e8ca6"],["index.html","a03b1f228177591e900c6931fb0e92f5"],["service-worker-190594d5b0.js","5462194cb838f2327cea9bdd7742fb9e"]];
+var PrecacheConfig = [["app-69dbe5a228.js","a7d1d2f4edcf019c1861aef06b735a44"],["app-a48229f3a1.css","a48229f3a11083fe9befee76136e8ca6"],["index.html","a03b1f228177591e900c6931fb0e92f5"],["service-worker-190594d5b0.js","5462194cb838f2327cea9bdd7742fb9e"],["service-worker.js","58f8f99d36cb7b0834d1d56ae983bae7"],["sw/runtime-caching.js","8ed5fe5dde1ab86b87f9091194ca3a21"],["sw/sw-toolbox.js","2770efb889cc10c4de88d0b746c2a13c"]];
 /* eslint-enable quotes, comma-spacing */
 var CacheNamePrefix = 'sw-precache-v1--' + (self.registration ? self.registration.scope : '') + '-';
 
