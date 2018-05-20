@@ -1,7 +1,7 @@
 {
-    "name": "hyperapp-boilerplate",
+    "name": "Sakura Arms board",
     "version": "0.0.3",
-    "description": "This is a sample/boilerplate project that shows how to create a production-ready hyperapp application.",
+    "description": "",
     "scripts": {
         "build": "taskr build release",
         "start": "taskr watch",
@@ -14,7 +14,7 @@
         "type": "git",
         "url": "git+ssh://git@github.com/tzellman/hyperapp-boilerplate.git"
     },
-    "author": "Tom Zellman <tzellman@gmail.com> (@tzellman)",
+    "author": "Carlo Colombo",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/tzellman/hyperapp-boilerplate/issues"
