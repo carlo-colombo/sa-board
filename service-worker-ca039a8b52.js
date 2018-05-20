@@ -1,1 +1,0 @@
-self.addEventListener("install",function(t){t.waitUntil(caches.open("board").then(function(t){return t.addAll(["/app-9f2c38664e.js","/app-ff11e1b0d2.css","/"].map(function(t){return"/sa-board/"+t}))}))}),self.addEventListener("fetch",function(t){t.respondWith(fetch(t.request).catch(function(){return caches.match(t.request)}))});
