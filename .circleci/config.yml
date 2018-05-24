@@ -34,6 +34,9 @@ jobs:
           key: v1-dependencies-{{ checksum "package-lock.json" }}
         
       # run tests!
-      - run:  npm run publish
+      - run: config --global user.email "$GIT_EMAIL"
+      - run: config --global user.name "$GIT_USER_NAME"
+      - run: npm run build
+      - run: npm run publish
 
 
