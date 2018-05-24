@@ -10,9 +10,11 @@ const Vigor = ({ player }) => ({ vigor }, { tapVigor }) => {
   )
 }
 
-const Actions = ({ player }) => (state, { reset }) => (
+const Actions = ({ player }) => (state, { resetState }) => (
   <div class="actions bottom-side">
-    <div class="action">C</div>
+    <div class="action" onclick={e => resetState()}>
+      C
+    </div>
     <div class="action">H</div>
   </div>
 )
