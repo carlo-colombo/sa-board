@@ -3,7 +3,7 @@ import Pool from './Pool.js'
 
 const Vigor = ({ player }) => ({ vigor }, { tapVigor }) => {
   return (
-    <div class="vigor" onclick={() => tapVigor(player)}>
+    <div class="vigor bottom-side" onclick={() => tapVigor(player)}>
       <div class="vigor-title">vigor</div>
       <div class="vigor-content">{vigor[player]}</div>
     </div>

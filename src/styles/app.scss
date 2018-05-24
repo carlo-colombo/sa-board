@@ -93,11 +93,19 @@ html, body {
             background-color: #f9ffa9;
         }
         .pool-life {
-            width: 90%;
+            width: 80%;
+        }
+        .bottom-side{
+            height: 50%;
+            width: 10%;
+            text-align: center;
+        }
+        .actions {
+            .action {
+                height: 50%;
+            }
         }
         .vigor {
-            width: 10%;
-            height: 50%;
             text-align: center;
             .vigor-title {
                 font-size: 15px;
