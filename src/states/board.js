@@ -1,5 +1,5 @@
 const state = {
-  pools: {
+  initialPools: {
     distance: 10,
     shadow: 0,
     lifeTop: 8,
@@ -9,6 +9,7 @@ const state = {
     flareTop: 0,
     flareBottom: 0
   },
+  pools: {},
   board: {
     dragging: false,
     src: null,

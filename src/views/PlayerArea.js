@@ -10,11 +10,19 @@ const Vigor = ({ player }) => ({ vigor }, { tapVigor }) => {
   )
 }
 
+const Actions = ({ player }) => (state, { reset }) => (
+  <div class="actions bottom-side">
+    <div class="action">C</div>
+    <div class="action">H</div>
+  </div>
+)
+
 export default function PlayerArea({ player }) {
   return (
     <div class={`player-area ${player == 'Top' ? 'flip' : ''}`}>
       <Pool name={`aura${player}`} limit={5} />
       <Pool name={`flare${player}`} />
+      <Actions player={player.toLowerCase()} />
       <Pool name={`life${player}`} />
       <Vigor player={player.toLowerCase()} />
     </div>
